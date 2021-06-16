@@ -27,7 +27,7 @@ class NaylorAMS extends IPluggableAuthBase {
         // This can be useful if there is a local-only user
         // and you don't want someone making an account on Naylor with the
         // exact same username to get into the account
-        $usernameDenyList = $config->get("UsernameDenyList");
+        $usernameDenyList = $config->get('UsernameDenyList');
 
         if (in_array(ucfirst(strtolower($username)), $usernameDenyList, true)) {
             $errorMsg = 'This username is prohibited from logging in with Naylor AMS SSO.';
@@ -35,8 +35,8 @@ class NaylorAMS extends IPluggableAuthBase {
         }
 
         // get $wgNaylorAMS_BaseUrl and $wgNaylorAMS_SecurityKey
-        $baseUrl = $config->get("BaseUrl");
-        $securityKey = $config->get("SecurityKey");
+        $baseUrl = $config->get('BaseUrl');
+        $securityKey = $config->get('SecurityKey');
 
         if ($securityKey === '') {
             $errorMsg = 'Could not log in due to misconfigured wiki settings. Security key is missing.';
@@ -44,7 +44,7 @@ class NaylorAMS extends IPluggableAuthBase {
         }
 
         // Make cURL request to Naylor AMS ValidateAuthenticationToken endpoint
-        $validateAuthEndpoint = $baseUrl . '/api/AuthenticateUser/';
+        $validateAuthEndpoint = "$baseUrl/api/AuthenticateUser/";
 
         $validateAuthResult = NaylorAMS::timberlakeRequest(
             $validateAuthEndpoint,
@@ -62,7 +62,7 @@ class NaylorAMS extends IPluggableAuthBase {
             return false;
         }
 
-        $basicInfoEndpoint = $baseUrl . '/api/GetBasicMemberInfo/';
+        $basicInfoEndpoint = "$baseUrl/api/GetBasicMemberInfo/";
         $userDetailsResult = NaylorAMS::timberlakeRequest(
             $basicInfoEndpoint,
             array(
