@@ -5,7 +5,7 @@ use GlobalVarConfig;
 
 class Config extends GlobalVarConfig {
 	public function __construct() {
-		parent::__construct( 'wgNaylorAMS_' );
+		parent::__construct('wgNaylorAMS_');
 	}
 
 	/**
