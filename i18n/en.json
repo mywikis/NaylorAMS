@@ -1,4 +1,6 @@
 {
     "naylorams-desc": "Authentication extension to integrate Naylor AMS Timberlake SSO",
-    "naylorams-loginbtn-text": "Log in with Naylor AMS"
+    "naylorams-loginbtn-text": "Log in with Naylor AMS",
+    "naylorams-username": "Naylor AMS Username",
+    "naylorams-password": "Naylor AMS Password"
 }
