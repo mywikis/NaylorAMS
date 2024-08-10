@@ -2,20 +2,26 @@
 namespace MediaWiki\Extension\NaylorAMS;
 
 use \MediaWiki\Auth\AuthManager;
-use PluggableAuth as IPluggableAuthBase;
-use PluggableAuthLogin;
+use \MediaWiki\Extension\PluggableAuth\PluggableAuth;
+use \MediaWiki\Extension\PluggableAuth\PluggableAuthLogin;
 use User;
 
-class NaylorAMS extends IPluggableAuthBase {
+class NaylorAMS extends PluggableAuth {
 
-    public function authenticate(&$id, &$username, &$realname, &$email, &$errorMsg) {
+    private AuthManager $authManager;
+
+    public function __construct(AuthManager $authManager) {
+        $this->authManager = $authManager;
+    }
+
+    public function authenticate(?int &$id, ?string &$username, ?string &$realname, ?string &$email, ?string &$errorMsg): bool {
         // Initialize singletons
         $config = Config::newInstance();
-        $authManager = AuthManager::singleton();
+        $authManager = $this->authManager;
         $extraLoginFields = $authManager->getAuthenticationSessionData(PluggableAuthLogin::EXTRALOGINFIELDS_SESSION_KEY);
 
-        $username = $extraLoginFields[ExtraLoginFields::USERNAME];
-		$password = $extraLoginFields[ExtraLoginFields::PASSWORD];
+        $username = $extraLoginFields['naylorAMSUsername'];
+        $password = $extraLoginFields['naylorAMSPassword'];
 
         // Sanity checks
         if (!isset($username) || $username === '') {
@@ -83,12 +89,26 @@ class NaylorAMS extends IPluggableAuthBase {
         return true;
     }
 
-    public function saveExtraAttributes($id) {
+    public function saveExtraAttributes(int $id): void {
         // do nothing
     }
 
-    public function deauthenticate(User &$user) {
+    public function deauthenticate(\MediaWiki\User\UserIdentity &$user): void {
         $user = null;
+    }
+
+    public static function getExtraLoginFields(): array {
+        return [
+            'naylorAMSUsername' => [
+                'type' => 'string',
+                'label' => 'naylorams-username',
+            ],
+            'naylorAMSPassword' => [
+                'type' => 'password',
+                'label' => 'naylorams-password',
+                'sensitive' => true
+            ]
+        ];
     }
 
     /*
