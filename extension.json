@@ -1,6 +1,6 @@
 {
     "name": "Naylor AMS SSO Integration",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "author": [
             "[https://github.com/mywikis MyWikis LLC]"
     ],
@@ -9,9 +9,9 @@
     "license-name": "GPL-2.0",
     "type": "other",
     "requires": {
-        "MediaWiki": ">= 1.31.0",
+        "MediaWiki": ">= 1.39.0",
         "extensions": {
-            "PluggableAuth": ">= 5.1"
+            "PluggableAuth": ">= 7.0"
         }
     },
     "MessagesDirs": {
@@ -24,6 +24,16 @@
     ],
     "AutoloadNamespaces": {
         "MediaWiki\\Extension\\NaylorAMS\\": "includes/"
+    },
+    "attributes": {
+        "PluggableAuth": {
+            "NaylorAMS": {
+                "class": "MediaWiki\\Extension\\NaylorAMS\\NaylorAMS",
+                "services": [
+                    "AuthManager"
+                ]
+            }
+        }
     },
     "config": {
         "PluggableAuth_Class": {
