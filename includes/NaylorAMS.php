@@ -129,8 +129,20 @@ class NaylorAMS extends PluggableAuth {
         curl_setopt($ch, CURLOPT_TIMEOUT, '5');
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); 
         $responseStr = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlErrno = curl_errno($ch);
+        $curlError = curl_error($ch);
         curl_close($ch);
         $responseArr = simplexml_load_string($responseStr);
+        wfDebugLog( 'NaylorAMS', sprintf(
+            'endpoint=%s http=%d errno=%d err=%s parsed=%s body=%s',
+            $endpoint,
+            $httpCode,
+            $curlErrno,
+            $curlError,
+            $responseArr === false ? 'false' : 'ok',
+            substr( (string)$responseStr, 0, 500 )
+        ) );
         return $responseArr;
     }
 }
